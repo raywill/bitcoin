@@ -1,5 +1,6 @@
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <mysql.h>
 #include <errmsg.h>
 #include <btch_tx_db.h>
@@ -94,8 +95,18 @@ void* BtchTxDB::Connect()
 	const char *user = "root";
 	const char *password = "sd-9898w";  
 	const char *database = _db;//"bitcoin";
-	conn = mysql_init(NULL);
 
+    if (NULL != getenv("MYSQL_SERVER")) {
+        server = getenv("MYSQL_SERVER");
+    }
+    if (NULL != getenv("MYSQL_USER")) {
+        user = getenv("MYSQL_USER");
+    }
+    if (NULL != getenv("MYSQL_PASS")) {
+        password = getenv("MYSQL_PASS");
+    }
+
+	conn = mysql_init(NULL);
 
     if(!mysql_real_connect(conn, server, user, password, database, 0, NULL, 0))
 	{
